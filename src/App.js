@@ -1,25 +1,41 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import CitySearch from './CitySearch';
+import NumberOfEvents from './NumberOfEvents';
+import EventList from './EventList';
+import { getUpcomingEvents } from './api';
 
 class App extends Component {
+  state = {
+    events: [],
+    lat: null,
+    lon: null,
+    page: null,
+  }
+
+  componentDidMount() {
+    this.updateEvents();
+  }
+
+  updateCity = (lat, lon) => {
+    this.setState({ lat, lon }, this.updateEvents);
+  }
+
+  updateNumberOfEvents = (number) => {
+    this.setState({ page: number }, this.updateEvents);
+  }
+
+  updateEvents = () => {
+    getUpcomingEvents(this.state.lat, this.state.lon, this.state.page).then(events => this.setState({ events }));
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Hello World!
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <h1>Meetup Events</h1>
+        <CitySearch updateCity={this.updateCity} />
+        <NumberOfEvents updateNumberOfEvents={this.updateNumberOfEvents} />
+        <EventList events={this.state.events} />
       </div>
     );
   }
