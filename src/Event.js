@@ -12,23 +12,21 @@ class Event extends Component {
   }
 
   render() {
-    const event = this.props.event || {};
-    const venue = event.venue || {};
-    const group = event.group || {};
+    const event = this.props.event;
     return (
       <li className="Event">
         <p className="time">{event.local_time} - {event.local_date}</p>
         <p className="name">{event.name}</p>
-        {group.name && <p className="group-name">Group: {group.name}</p>}
+        {event.group && event.group.name && <p className="group-name">Group: {event.group.name}</p>}
         <p className="going">{event.yes_rsvp_count} people are going</p>
         {this.state.expanded &&
           <div className="extra">
-            {venue.name && 
+            {event.venue && event.venue.name &&
               <p className="address">
-                {venue.name
-                  + ', ' + venue.address_1
-                  + ', ' + venue.city
-                  + ', ' + venue.localized_country_name
+                {event.venue.name
+                  + ', ' + event.venue.address_1
+                  + ', ' + event.venue.city
+                  + ', ' + event.venue.localized_country_name
                 }
               </p>
             }

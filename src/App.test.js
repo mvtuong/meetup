@@ -26,4 +26,10 @@ describe('<App /> integration', async () => {
   it('render correct number of events', () => {
     expect(AppWrapper.find(EventList).props().events.length).toEqual(4);
   });
+
+  it('update state when user change the city', () => {
+    AppWrapper.instance().updateCity(1.4, 1.5);
+    expect(AppWrapper.state('lat')).toBeCloseTo(1.4);
+    expect(AppWrapper.state('lon')).toBeCloseTo(1.5);
+  });
 });

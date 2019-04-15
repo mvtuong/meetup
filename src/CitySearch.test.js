@@ -42,8 +42,7 @@ describe('<CitySearch /> interactions', () => {
   it('change city when user clicks on a suggestion', () => {
     CitySearchWrapper.find('ul.suggestions li').at(0).simulate('click');
     expect(CitySearchWrapper.find('input[type="text"]').props().value).toEqual('Munich, Germany');
-    expect(updateCity).toBeCalled();
-    expect(updateCity.mock.calls.length).toBe(1);
+    expect(updateCity).toHaveBeenCalledTimes(1);
     expect(updateCity).toBeCalledWith(48.14, 11.58);
   });
 });
