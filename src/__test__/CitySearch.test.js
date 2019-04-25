@@ -5,7 +5,7 @@ import CitySearch from '../CitySearch';
 describe('<CitySearch /> component', () => {
   let CitySearchWrapper;
   beforeAll(() => {
-    CitySearchWrapper = shallow(<CitySearch />);
+    CitySearchWrapper = shallow(<CitySearch updateEvents={() => {}}/>);
   });
 
   test('render text input', () => {
@@ -59,8 +59,10 @@ describe('<CitySearch /> component', () => {
       ]
     });
 
+    expect(CitySearchWrapper.find('.suggestions li')).toHaveLength(2);
     CitySearchWrapper.find('.suggestions li').at(0).simulate('click');
     expect(CitySearchWrapper.state('query')).toBe('Munich, Germany');
+    expect(CitySearchWrapper.find('.suggestions li')).toHaveLength(0);
   });
 });
 
@@ -90,6 +92,5 @@ describe('<CitySearch /> integration', () => {
         lon: -98.85
       }
     ]);
-    // expect(CitySearchWrapper.find('.suggestions li')).toHaveLength(2);
   });
 });

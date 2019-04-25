@@ -26,15 +26,28 @@ describe('<App /> component', () => {
 });
 
 describe('<App /> integration', () => {
-  test('get list of events after user selects a city', async () => {
+  test('get list of events after user selects a city', () => {
     const AppWrapper = mount(<App />);
-    AppWrapper.find('.city').simulate('change', { target: { value: 'Munich' } });
-    // AppWrapper.find('.city').props().onChange({ target: { value: 'Munich' } });
-    // await AppWrapper.update();
-    // AppWrapper.instance().forceUpdate();
-    // expect(AppWrapper.find('.suggestions li')).toHaveLength(1);
-    AppWrapper.find('.suggestions li').at(0).simulate('click');
-    // AppWrapper.find('.suggestions li').at(0).simulate('click');
-    // expect(AppWrapper.state('events')).toEqual();
+    AppWrapper.instance().updateEvents = jest.fn();
+    AppWrapper.instance().forceUpdate();
+    const CitySearchWrapper = AppWrapper.find(CitySearch);
+    CitySearchWrapper.instance().handleItemClicked('value', 1.1, 1.2);
+    expect(AppWrapper.instance().updateEvents).toHaveBeenCalledTimes(1);
+    expect(AppWrapper.instance().updateEvents).toHaveBeenCalledWith(1.1, 1.2);
+    AppWrapper.unmount();
+  });
+
+  test('change state after get list of events', async () => {
+    const AppWrapper = shallow(<App />);
+    AppWrapper.instance().updateEvents(1.1, 1.2);
+    await AppWrapper.update();
+    expect(AppWrapper.state('events')).toEqual(mockEvents.events);
+  });
+
+  test('render correct list of events', () => {
+    const AppWrapper = mount(<App />);
+    AppWrapper.setState({ events: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }] });
+    expect(AppWrapper.find('.Event')).toHaveLength(4);
+    AppWrapper.unmount();
   });
 });
