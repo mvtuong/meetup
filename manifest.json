@@ -1,9 +1,9 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Meetup",
+  "name": "Meetup Application",
   "icons": [
     {
-      "src": "meetup.png",
+      "src": "icon.png",
       "sizes": "512x512",
       "type": "image/png"
     }
