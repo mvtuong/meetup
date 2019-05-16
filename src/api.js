@@ -93,6 +93,11 @@ async function getEvents(lat, lon, page) {
   if (window.location.href.startsWith('http://localhost')) {
     return mockEvents.events;
   }
+
+  if (!navigator.onLine) {
+    const events = localStorage.getItem('lastEvents');
+    return JSON.parse(events);
+  }
   
   const token = await getAccessToken();
   if (token) {
@@ -108,7 +113,12 @@ async function getEvents(lat, lon, page) {
     }
 
     const result = await axios.get(url);
-    return result.data.events;
+    const events = result.data.events;
+    if (events.length) { // Check if the events are existed before storing
+      localStorage.setItem('lastEvents', JSON.stringify(events));
+    }
+
+    return events;
   }
   return [];
 }
